@@ -69,7 +69,7 @@ download_camelk() {
 
 kubectl get crd | grep -q services.serving.knative.dev
 if [ $? != 0 ]; then
-  echo "Please install Knative Eventing first with 01-kn-serving.sh"
+  echo "Please install Knative Serving first with 01-kn-serving.sh"
   exit 1
 fi;
 
