@@ -67,10 +67,22 @@ download_camelk() {
   cp $temp_dir/kamel .
 }
 
+kubectl get crd | grep -q services.serving.knative.dev
+if [ $? != 0 ]; then
+  echo "Please install Knative Eventing first with 01-kn-serving.sh"
+  exit 1
+fi;
+
+kubectl get crd | grep -q brokers.eventing.knative.dev
+if [ $? != 0 ]; then
+  echo "Please install Knative Eventing first with 02-kn-eventing.sh"
+  exit 1
+fi;
+
 if [ ! -x ./kamel ]; then
   download_camelk
 fi
 
 header_text "Installing Camel-K operator"
-kubectl create namespace camel-system
+kubectl create namespace camel-system >/dev/null 2>&1 
 ./kamel install --force --global -n camel-system -w -V
